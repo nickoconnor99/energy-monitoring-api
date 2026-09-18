@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { SensorEntity } from './sensor.entity/sensor.entity';
 import { CreateSensorDto } from './dto/create-sensor.dto';
+import { UpdateSensorDto } from './dto/update-sensor.dto';
 
 @Injectable()
 export class SensorsService {
@@ -27,6 +28,21 @@ export class SensorsService {
 
   async createSensor(createSensorDto: CreateSensorDto): Promise<SensorEntity> {
   const sensor = this.sensorRepository.create(createSensorDto);
+  return this.sensorRepository.save(sensor);
+}
+
+async updateSensor(
+  id: number,
+  updateSensorDto: UpdateSensorDto,
+): Promise<SensorEntity> {
+  const sensor = await this.sensorRepository.findOneBy({ id });
+
+  if (!sensor) {
+    throw new NotFoundException(`Sensor with ID ${id} not found`);
+  }
+
+  sensor.name = updateSensorDto.name;
+
   return this.sensorRepository.save(sensor);
 }
 }

@@ -1,8 +1,8 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Get, Post, Patch} from '@nestjs/common';
 import { SensorsService } from './sensors.service';
 import { CreateSensorDto } from './dto/create-sensor.dto';
 import { Param } from '@nestjs/common';
-
+import { UpdateSensorDto } from './dto/update-sensor.dto';
 
 @Controller('sensors')
 export class SensorsController {
@@ -23,5 +23,13 @@ getSensor(@Param('id') id: string) {
   createSensor(@Body() createSensorDto: CreateSensorDto) {
     return this.sensorsService.createSensor(createSensorDto);
   }
+
+  @Patch(':id')
+updateSensor(
+  @Param('id') id: string,
+  @Body() updateSensorDto: UpdateSensorDto,
+) {
+  return this.sensorsService.updateSensor(Number(id), updateSensorDto);
+}
 
 }
