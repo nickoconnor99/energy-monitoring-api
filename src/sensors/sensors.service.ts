@@ -1,4 +1,4 @@
-﻿import { Injectable } from '@nestjs/common';
+﻿import { Injectable ,NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { SensorEntity } from './sensor.entity/sensor.entity';
@@ -14,6 +14,16 @@ export class SensorsService {
   async getSensors(): Promise<SensorEntity[]> {
     return this.sensorRepository.find();
   }
+
+  async getSensor(id: number): Promise<SensorEntity> {
+  const sensor = await this.sensorRepository.findOneBy({ id });
+
+  if (!sensor) {
+    throw new NotFoundException(`Sensor with ID ${id} not found`);
+  }
+
+  return sensor;
+}
 
   async createSensor(createSensorDto: CreateSensorDto): Promise<SensorEntity> {
   const sensor = this.sensorRepository.create(createSensorDto);
