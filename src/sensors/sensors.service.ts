@@ -26,6 +26,16 @@ export class SensorsService {
   return sensor;
 }
 
+async deleteSensor(id: number): Promise<void> {
+  const sensor = await this.sensorRepository.findOneBy({ id });
+
+  if (!sensor) {
+    throw new NotFoundException(`Sensor with ID ${id} not found`);
+  }
+
+  await this.sensorRepository.remove(sensor);
+}
+
   async createSensor(createSensorDto: CreateSensorDto): Promise<SensorEntity> {
   const sensor = this.sensorRepository.create(createSensorDto);
   return this.sensorRepository.save(sensor);

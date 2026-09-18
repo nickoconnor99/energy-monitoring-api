@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, Patch} from '@nestjs/common';
+import { Body, Controller, Get, Post, Patch, Delete} from '@nestjs/common';
 import { SensorsService } from './sensors.service';
 import { CreateSensorDto } from './dto/create-sensor.dto';
 import { Param } from '@nestjs/common';
@@ -17,6 +17,11 @@ export class SensorsController {
   @Get(':id')
 getSensor(@Param('id') id: string) {
   return this.sensorsService.getSensor(Number(id));
+}
+
+@Delete(':id')
+deleteSensor(@Param('id') id: string) {
+  return this.sensorsService.deleteSensor(Number(id));
 }
 
   @Post()
